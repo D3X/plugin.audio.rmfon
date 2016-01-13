@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.audio.rmfon" name="RMFon" version="0.0.1" provider-name="Michał Bielawski (michal@bielaw.ski)">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+        <import addon="script.module.xbmcswift2" version="2.4.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="addon.py">
+        <provides>audio</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <language></language>
+        <platform>all</platform>
+        <website>http://www.radio.de</website>
+        <source>https://github.com/d3x/plugin.audio.rmfon</source>
+        <forum>http://forum.xbmc.org/showthread.php?tid=119362</forum>
+        <email>sphere@dersphere.de</email>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+        <summary lang="pl">RMFon</summary>
+        <description lang="pl">RMFon</description>
+    </extension>
+</addon>
