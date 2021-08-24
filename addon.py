@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
-#     Copyright (C) 2012 Tristan Fischer (sphere@dersphere.de)
+#     Copyright (C) 2016-2021 Michał Bielawski (michal@bielaw.ski)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,42 +16,42 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 from xbmcswift2 import Plugin
-from resources.lib.api import Api, ApiError
 
+from resources.lib.api import Api, ApiError
 
 plugin = Plugin()
 api = Api(logger=plugin.log)
 
 
-@plugin.route('/')
+@plugin.route("/")
 def show_root_menu():
     items = [
         {
-            'label': station.name,
-            'path': plugin.url_for('play', api_id=station.api_id),
+            "label": station.name,
+            "path": plugin.url_for("play", api_id=station.api_id),
         }
         for station in api.get_stations()
     ]
     return plugin.finish(items)
 
 
-@plugin.route('/play/<api_id>')
+@plugin.route("/play/<api_id>")
 def play(api_id):
     station = api.get_station(api_id)
     items = [
         {
-            'label': '{station} ({url})'.format(station=station.name, url=source),
-            'thumbnail': station.thumbnail,
-            'path': source,
-            'is_playable': True,
+            "label": "{station} ({url})".format(station=station.name, url=source),
+            "thumbnail": station.thumbnail,
+            "path": source,
+            "is_playable": True,
         }
         for source in station.get_sources()
     ]
     return plugin.finish(items)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         plugin.run()
     except ApiError:
-        plugin.notify('Network error')
+        plugin.notify("Network error")

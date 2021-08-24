@@ -17,11 +17,9 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 import json
-from HTMLParser import HTMLParser
-from urllib2 import urlopen, Request
+from html import unescape
+from urllib.request import Request, urlopen
 from xml.etree import ElementTree
-
-html_parser = HTMLParser()
 
 
 class ApiError(Exception):
@@ -29,7 +27,7 @@ class ApiError(Exception):
 
 
 class Api(object):
-    URL = 'http://rmfon.pl/json/stations.txt'
+    URL = "http://rmfon.pl/json/stations.txt"
 
     def __init__(self, logger):
         self.stations = None
@@ -38,7 +36,7 @@ class Api(object):
     def get_stations(self):
         if self.stations is None:
             try:
-                self.logger.info('Fetching stations list')
+                self.logger.info("Fetching stations list")
                 stations_json = urlopen(Request(self.URL)).read()
             except Exception:
                 raise ApiError()
@@ -58,12 +56,10 @@ class Api(object):
 
 
 class Station(object):
-    URL =  'http://www.rmfon.pl/stacje/flash_aac_{api_id}.xml.txt'
+    URL = "http://www.rmfon.pl/stacje/flash_aac_{api_id}.xml.txt"
 
     def __init__(self, logger, **kwargs):
         self.logger = logger
-        self.api_id = kwargs['id']
-        self.name = html_parser.unescape(kwargs['name'])
         self.thumbnail = None
         self.sources = None
 
@@ -72,12 +68,12 @@ class Station(object):
             url = self.URL.format(api_id=self.api_id)
 
             try:
-                self.logger.info('Fetching sources list')
+                self.logger.info("Fetching sources list")
                 sources_xml = urlopen(Request(url)).read()
             except Exception:
                 raise ApiError()
             tree = ElementTree.fromstring(sources_xml)
 
-            self.sources = sorted([item.text for item in tree.findall('.//item')])
+            self.sources = sorted(item.text or "" for item in tree.findall("./item"))
 
         return self.sources

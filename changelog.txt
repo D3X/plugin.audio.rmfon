@@ -1,2 +1,4 @@
+2021-08-24
+- Updated for Kodi 19
 2016-01-13
 - Initial version
